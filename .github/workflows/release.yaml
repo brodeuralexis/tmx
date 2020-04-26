@@ -25,6 +25,7 @@ jobs:
       # context expressions lack the most basic string manipulation functions...
       - name: Create distribution folder
         run: |
+          set -x
           ARTIFACT_NAME=${GITHUB_REF:10}-linux
           DIST_PATH=${GITHUB_WORKSPACE}/${ARTIFACT_NAME}
           echo ::set-output name=ARTIFACT_NAME::${ARTIFACT_NAME}
