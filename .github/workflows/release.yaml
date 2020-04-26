@@ -21,13 +21,15 @@ jobs:
   linux64:
     name: Linux 64 Build
     runs-on: ubuntu-16.04
-    env:
-      ARTIFACT_NAME: ${{ github.ref }}-linux
-      DIST_PATH: ${{ github.workspace }}/${{ github.ref }}-linux
-
     steps:
+      # context expressions lack the most basic string manipulation functions...
       - name: Create distribution folder
-        run: mkdir "${DIST_PATH}"
+        run: |
+          ARTIFACT_NAME=${GITHUB_REF:10}-linux
+          DIST_PATH=${GITHUB_WORKSPACE}/${ARTIFACT_NAME}
+          echo ::set-output name=ARTIFACT_NAME::${ARTIFACT_NAME}
+          echo ::set-output name=DIST_PATH::${DIST_PATH}
+          mkdir "${DIST_PATH}"
 
       # Build and install zlib
       - name: Checkout zlib
@@ -83,13 +85,14 @@ jobs:
   html5:
     name: HTML5 Build
     runs-on: ubuntu-latest
-    env:
-      ARTIFACT_NAME: ${{ github.ref }}-html5
-      DIST_PATH: ${{ github.workspace }}/${{ github.ref }}-html5
-
     steps:
       - name: Create distribution folder
-        run: mkdir "${DIST_PATH}"
+        run: |
+          ARTIFACT_NAME=${GITHUB_REF:10}-html5
+          DIST_PATH=${GITHUB_WORKSPACE}/${ARTIFACT_NAME}
+          echo ::set-output name=ARTIFACT_NAME::${ARTIFACT_NAME}
+          echo ::set-output name=DIST_PATH::${DIST_PATH}
+          mkdir "${DIST_PATH}"
 
       # Build and install emscripten
       - name: Checkout emsdk
@@ -150,13 +153,14 @@ jobs:
   windows:
     name: Windows Build
     runs-on: windows-2016
-    env:
-      ARTIFACT_NAME: ${{ github.ref }}-win
-      DIST_PATH: ${{ github.workspace }}\${{ github.ref }}-win
-
     steps:
       - name: Create distribution folder
-        run: mkdir "$($Env:DIST_PATH)"
+        run: |
+          $ARTIFACT_NAME=$($Env:GITHUB_REF).substring(10) + "-win"
+          echo "::set-env name=ARTIFACT_NAME::$ARTIFACT_NAME"
+          $DIST_PATH="$($Env:GITHUB_WORKSPACE)\$ARTIFACT_NAME"
+          echo "::set-env name=DIST_PATH::$DIST_PATH"
+          mkdir "$DIST_PATH"
 
       # Build and install zlib
       - name: Checkout zlib
