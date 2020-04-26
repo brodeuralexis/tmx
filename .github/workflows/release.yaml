@@ -25,11 +25,10 @@ jobs:
       # context expressions lack the most basic string manipulation functions...
       - name: Create distribution folder
         run: |
-          set -x
           ARTIFACT_NAME=${GITHUB_REF:10}-linux
           DIST_PATH=${GITHUB_WORKSPACE}/${ARTIFACT_NAME}
-          echo ::set-output name=ARTIFACT_NAME::${ARTIFACT_NAME}
-          echo ::set-output name=DIST_PATH::${DIST_PATH}
+          echo ::set-env name=ARTIFACT_NAME::${ARTIFACT_NAME}
+          echo ::set-env name=DIST_PATH::${DIST_PATH}
           mkdir "${DIST_PATH}"
 
       # Build and install zlib
@@ -91,8 +90,8 @@ jobs:
         run: |
           ARTIFACT_NAME=${GITHUB_REF:10}-html5
           DIST_PATH=${GITHUB_WORKSPACE}/${ARTIFACT_NAME}
-          echo ::set-output name=ARTIFACT_NAME::${ARTIFACT_NAME}
-          echo ::set-output name=DIST_PATH::${DIST_PATH}
+          echo ::set-env name=ARTIFACT_NAME::${ARTIFACT_NAME}
+          echo ::set-env name=DIST_PATH::${DIST_PATH}
           mkdir "${DIST_PATH}"
 
       # Build and install emscripten
